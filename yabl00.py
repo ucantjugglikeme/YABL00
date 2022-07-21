@@ -1,26 +1,20 @@
 import vk_api
-import random
-import reply_module
+from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
+import direct_controller_module
+import chat_controller_module
 
 token_file = open("../YABL00_DATABASE/yabl00_token")
 bot_token = token_file.read()
+group_id_file = open("../YABL00_DATABASE/group_id")
+group_id = group_id_file.read()
 vk_session = vk_api.VkApi(token=bot_token)
 
-while True:
-    messages = vk_session.method(
-        'messages.getConversations',
-        {'offset': 0, 'count': 20, 'filter': 'unanswered'}
-    )
+long_poll = VkBotLongPoll(vk_session, int(group_id))
 
-    if messages['count'] == 0:
-        continue
-
-    text = messages['items'][0]['last_message']['text']
-    user_id = messages['items'][0]['last_message']['from_id']
-
-    reply_msg = reply_module.get_response_if_kw(text)
-    if reply_msg:
-        vk_session.method(
-            'messages.send',
-            {'user_id': user_id, 'message': reply_msg, 'random_id': random.randint(1, 1000)}
-        )
+for event in long_poll.listen():
+    match event.type:
+        case VkBotEventType.MESSAGE_NEW:
+            if event.from_chat:
+                chat_controller_module.handle_chat_msg(vk_session, event)
+            else:
+                direct_controller_module.handle_direct_msg(vk_session, event)
