@@ -5,8 +5,10 @@ import chat_controller_module
 
 token_file = open("../YABL00_DATABASE/yabl00_token")
 bot_token = token_file.read()
+token_file.close()
 group_id_file = open("../YABL00_DATABASE/group_id")
 group_id = group_id_file.read()
+group_id_file.close()
 vk_session = vk_api.VkApi(token=bot_token)
 
 long_poll = VkBotLongPoll(vk_session, int(group_id))
