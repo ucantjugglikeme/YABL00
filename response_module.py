@@ -1,5 +1,6 @@
 import re
 import cmd_modules_dir.anecdote_module as a_module
+import rand_module
 
 
 def get_response_dict():
@@ -24,6 +25,8 @@ def get_response_if_kw(msg):
 
 
 def get_response_if_cmd(msg, group_id):
-    bot_summoning = f'(\[club{group_id}\|@yab_loo\]|Y|y)'
+    bot_summoning = f'(\[club{group_id}\|@yab_loo\][,]?|Y|y)'
     if re.match(f'{bot_summoning} g a', msg):
-        a_module.create_anecdote_list()
+        anecdotes = a_module.create_anecdote_list()
+        return rand_module.get_random_iterable_item(anecdotes)
+    return None

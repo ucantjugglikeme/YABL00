@@ -1,13 +1,11 @@
-import replying_module
-import response_module
+import new_msg_controller_module
 
 
 def handle_direct_msg(vk, event, group_id):
     user_id = event.object.message['from_id']
+    peer_id = event.object.message['peer_id']
     msg = event.object.message['text']
-
-    reply_dict = response_module.get_response_if_kw(msg)
-    if reply_dict is not None:
-        replying_module.send_msg_to_user(vk, user_id, reply_dict)
-    else:
-        response_module.get_response_if_cmd(msg, group_id)
+    new_msg_controller_module.handle_msg(
+        vk, 'user_id', user_id,
+        msg, group_id, event, peer_id
+    )
