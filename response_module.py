@@ -1,10 +1,9 @@
 import re
+import cmd_modules_dir.anecdote_module as a_module
 
 
 def get_response_dict():
-    kw_file = open(file='../YABL00_DATABASE/text_to_answer', encoding='utf-8')
-    # kw_dict = {re.split('\|', line)[0]: re.split('\|', line)[1] for line in kw_file}
-    # kw_dict = {re.split('\|', line)[0]: [val for val in re.split('\|', line)[1].split(';')] for line in kw_file}
+    kw_file = open(file='../YABL00_DATABASE/text_msgs_to_answer', encoding='utf-8')
     kw_dict = {
         re.split('\|', line.rstrip('\n'))[0]: {
             re.split('->', val)[0]: re.split('->', val)[1].replace('\\n', '\n')
@@ -22,3 +21,9 @@ def get_response_if_kw(msg):
         if re.fullmatch(key, msg):
             return value
     return None
+
+
+def get_response_if_cmd(msg, group_id):
+    bot_summoning = f'(\[club{group_id}\|@yab_loo\]|Y|y)'
+    if re.match(f'{bot_summoning} g a', msg):
+        a_module.create_anecdote_list()

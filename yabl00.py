@@ -17,6 +17,6 @@ for event in long_poll.listen():
     match event.type:
         case VkBotEventType.MESSAGE_NEW:
             if event.from_chat:
-                chat_controller_module.handle_chat_msg(vk_session, event)
+                chat_controller_module.handle_chat_msg(vk_session, event, group_id)
             else:
-                direct_controller_module.handle_direct_msg(vk_session, event)
+                direct_controller_module.handle_direct_msg(vk_session, event, group_id)
