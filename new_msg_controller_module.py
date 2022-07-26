@@ -14,7 +14,6 @@ def handle_msg(vk, address_str, _id, msg, group_id, event, peer_id):
                 "peer_id": peer_id, "conversation_message_ids": [msg_id],
                 "is_reply": True
             })
-        print(query_json)
         replying_module.reply_to_msg(
             vk, address_str, _id, cmd_reply, query_json
         )
