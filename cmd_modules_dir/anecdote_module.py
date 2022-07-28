@@ -1,7 +1,7 @@
 import re
 from bs4 import BeautifulSoup
 # from lxml import html
-import requests
+# import requests
 
 
 def get_anecdote_html_page():

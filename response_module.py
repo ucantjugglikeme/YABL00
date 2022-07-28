@@ -1,5 +1,6 @@
 import re
 import cmd_modules_dir.anecdote_module as a_module
+import interaction_module
 import rand_module
 
 
@@ -24,9 +25,37 @@ def get_response_if_kw(msg):
     return None
 
 
-def get_response_if_cmd(msg, group_id):
+def prepare_members_data(profiles):
+    users = list()
+    for profile in profiles:
+        user_name = f'[id{profile.get("id")}|{profile.get("first_name")} ' \
+                    f'{profile.get("last_name")}]'
+        users.append(user_name)
+    return users
+
+
+def get_response_if_who_dies(vk, msg, address_str, _id, peer_id, group_id):
+    if re.match('кто сдохнет первым[ ]?[?]?', msg.lower()):
+        if address_str == 'chat_id':
+            serv_response = interaction_module.get_chat_info(vk, peer_id, group_id)
+            profiles = serv_response['profiles']
+            users_list = prepare_members_data(profiles)
+            rand_member = rand_module.get_random_iterable_item(users_list)
+            return f'Я думаю, что это - {rand_member}!'
+        else:
+            return 'Определённо не я!'
+    return None
+
+
+def get_response_if_anecdote(msg, group_id):
     bot_summoning = f'(\[club{group_id}\|@yab_loo\][,]?|Y|y)'
     if re.match(f'{bot_summoning} g a', msg):
         anecdotes = a_module.create_anecdote_list()
         return rand_module.get_random_iterable_item(anecdotes)
     return None
+
+
+def get_response_if_dall_e(msg, group_id):
+    bot_summoning = f'(\[club{group_id}\|@yab_loo\][,]?|Y|y)'
+    if re.match(f'{bot_summoning} dall_e ([a-zA-Z0-9а-яА-Я"()!?;,.]+[ ]*)+', msg):
+        anecdotes = a_module.create_anecdote_list()

@@ -13,10 +13,14 @@ vk_session = vk_api.VkApi(token=bot_token)
 
 long_poll = VkBotLongPoll(vk_session, int(group_id))
 
-for event in long_poll.listen():
-    match event.type:
-        case VkBotEventType.MESSAGE_NEW:
-            if event.from_chat:
-                chat_controller_module.handle_chat_msg(vk_session, event, group_id)
-            else:
-                direct_controller_module.handle_direct_msg(vk_session, event, group_id)
+while True:
+    try:
+        for event in long_poll.listen():
+            match event.type:
+                case VkBotEventType.MESSAGE_NEW:
+                    if event.from_chat:
+                        chat_controller_module.handle_chat_msg(vk_session, event, group_id)
+                    else:
+                        direct_controller_module.handle_direct_msg(vk_session, event, group_id)
+    except Exception as e:
+        print(str(e))

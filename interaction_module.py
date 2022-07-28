@@ -30,3 +30,12 @@ def reply_to_msg(vk, address_str, _id, reply_msg, query_json):
             'random_id': rand_module.get_random_id()
         }
     )
+
+
+def get_chat_info(vk, peer_id, group_id):
+    return vk.method(
+        'messages.getConversationMembers',
+        {
+            'peer_id': peer_id, 'group_id': group_id
+        }
+    )
