@@ -9,6 +9,7 @@ class Command(enum.Enum):
     anecdote = 1
     dall_e = 2
     who_dies = 3
+    bored = 4
 
 
 class CommandController:
@@ -29,6 +30,8 @@ class CommandController:
                     self.response = response_module.get_response_if_who_dies(
                         vk, msg, address_str, _id, peer_id, group_id
                     )
+                case Command.bored:
+                    self.response = response_module.get_response_if_bored(msg, group_id)
             self.state = state
             if self.response is not None:
                 break
@@ -54,6 +57,10 @@ class CommandController:
             case Command.dall_e:
                 pass
             case Command.who_dies:
+                interaction_module.reply_to_msg(
+                    vk, address_str, _id, self.response, query_json
+                )
+            case Command.bored:
                 interaction_module.reply_to_msg(
                     vk, address_str, _id, self.response, query_json
                 )

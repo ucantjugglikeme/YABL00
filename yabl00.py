@@ -1,5 +1,7 @@
 import vk_api
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
+
+import delays
 import direct_controller_module
 import chat_controller_module
 
@@ -12,6 +14,8 @@ group_id_file.close()
 vk_session = vk_api.VkApi(token=bot_token)
 
 long_poll = VkBotLongPoll(vk_session, int(group_id))
+
+delays.init_delays()
 
 while True:
     try:

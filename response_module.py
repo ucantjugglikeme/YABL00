@@ -48,14 +48,16 @@ def get_response_if_who_dies(vk, msg, address_str, _id, peer_id, group_id):
 
 
 def get_response_if_anecdote(msg, group_id):
-    bot_summoning = f'(\[club{group_id}\|@yab_loo\][,]?|Y|y)'
+    bot_summoning = f'(\[club{group_id}\|[@]?[а-яА-Яa-zA-Z_0-9 ]+\][,]?|Y|y)'
     if re.match(f'{bot_summoning} g a', msg):
         anecdotes = a_module.create_anecdote_list()
         return rand_module.get_random_iterable_item(anecdotes)
     return None
 
 
-def get_response_if_dall_e(msg, group_id):
-    bot_summoning = f'(\[club{group_id}\|@yab_loo\][,]?|Y|y)'
-    if re.match(f'{bot_summoning} dall_e ([a-zA-Z0-9а-яА-Я"()!?;,.]+[ ]*)+', msg):
-        anecdotes = a_module.create_anecdote_list()
+def get_response_if_bored(msg, group_id):
+    bot_summoning = f'(\[club{group_id}\|[@]?[a-zA-Z_0-9]+\][,]?|Y|y)'
+    if re.match(f'{bot_summoning} I\'m bored( as fuck)?', msg):
+        return a_module.get_activity_if_bored(False)
+    elif re.match(f'{bot_summoning} мне скучно( жесть как)?', msg):
+        return a_module.get_activity_if_bored(True)
