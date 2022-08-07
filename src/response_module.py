@@ -1,5 +1,5 @@
 import re
-import cmd_modules_dir.anecdote_module as a_module
+import src.cmd_modules_dir.anecdote_module as a_module
 import interaction_module
 import rand_module
 
@@ -61,3 +61,11 @@ def get_response_if_bored(msg, group_id):
         return a_module.get_activity_if_bored(False)
     elif re.match(f'{bot_summoning} мне скучно( жесть как)?', msg):
         return a_module.get_activity_if_bored(True)
+
+
+def get_response_if_cats(vk, msg, group_id):
+    bot_summoning = f'(\[club{group_id}\|[@]?[a-zA-Z_0-9]+\][,]?|Y|y)'
+    if re.match(f'{bot_summoning} g c.*', msg):
+        code = re.search('c .*', msg)
+        code = '401' if code is None else code.group(0)[2:]
+        return a_module.get_http_cats(vk, code)

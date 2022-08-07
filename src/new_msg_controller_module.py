@@ -1,7 +1,4 @@
-import interaction_module
-import response_module
-from cmd_modules_dir.cmd_controller import CommandController
-import json
+from src.cmd_modules_dir.cmd_controller import CommandController
 
 
 def handle_msg(vk, address_str, _id, msg, group_id, event, peer_id):

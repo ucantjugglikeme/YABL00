@@ -21,13 +21,14 @@ def send_msg(vk, address_str, _id, reply_dict):
     )
 
 
-def reply_to_msg(vk, address_str, _id, reply_msg, query_json):
+def reply_to_msg(vk, address_str, _id, reply_msg, query_json, attachment=''):
     vk.method(
         'messages.send',
         {
             address_str: _id, 'message': reply_msg,
             'forward': query_json,
-            'random_id': rand_module.get_random_id()
+            'random_id': rand_module.get_random_id(),
+            'attachment': attachment
         }
     )
 
@@ -37,5 +38,18 @@ def get_chat_info(vk, peer_id, group_id):
         'messages.getConversationMembers',
         {
             'peer_id': peer_id, 'group_id': group_id
+        }
+    )
+
+
+def get_photo_msgs_upload_server(vk):
+    return vk.method('photos.getMessagesUploadServer')
+
+
+def get_saved_msgs_photo(vk, photo, server, hash_str):
+    return vk.method(
+        'photos.saveMessagesPhoto',
+        {
+            'photo': photo, 'server': server, 'hash': hash_str
         }
     )

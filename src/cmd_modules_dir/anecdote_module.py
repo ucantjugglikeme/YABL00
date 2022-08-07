@@ -2,10 +2,13 @@ import json
 import re
 import urllib3
 import nlpcloud
-import delays
+from vk_api import VkUpload
+from src import delays
 from bs4 import BeautifulSoup
 # from lxml import html
 import requests
+
+import src.interaction_module as interact_module
 
 
 def get_anecdote_html_page():
@@ -93,10 +96,10 @@ def get_beaut_str(data_dict):
 # another cmd
 def get_activity_if_bored(ru):
     delta = delays.get_delta_activity_time()
-    if delta.seconds < 45:
+    if delta.seconds < 45 and ru:
         return f'Подожди пожалуйста ещё {45 - delta.seconds} сек!\n' \
                f'Сервер ругается...'
-    else:
+    elif ru:
         delays.update_activity_ltime()
 
     urllib3.disable_warnings()
@@ -108,3 +111,40 @@ def get_activity_if_bored(ru):
     str_data = get_translated_data(data_decoded) if ru \
         else get_beaut_str(data_decoded)
     return str_data
+
+
+def get_http_cats(vk, code):
+    with open('../YABL00_DATABASE/cats_imgs') as cats_file:
+        for line in cats_file:
+            prev_code, sep, img_id = line.partition(':')
+            if prev_code == code:
+                return img_id
+
+    upload_server = interact_module.get_photo_msgs_upload_server(vk)
+    upload_url = upload_server.get('upload_url')
+
+    img_r = requests.get(f'https://http.cat/{code}')
+    img_bytes = bytes()
+    for chunk in img_r.iter_content():
+        img_bytes += chunk
+
+    r = requests.post(upload_url,
+                      files={'photo': (f'cat{code}.jpg', img_bytes)}
+                      )
+    decoded_r = json.loads(r.text)
+    server_id = decoded_r.get('server')
+    photo = decoded_r.get('photo')
+    hash_str = decoded_r.get('hash')
+
+    uploaded_img_data = interact_module.get_saved_msgs_photo(
+        vk, photo, server_id, hash_str
+    )
+    owner_id = uploaded_img_data[0].get('owner_id')
+    photo_id = uploaded_img_data[0].get('id')
+
+    photo_format = f'photo{owner_id}_{photo_id}'
+
+    with open('../YABL00_DATABASE/cats_imgs', 'a') as cats_file:
+        cats_file.write(':'.join([code, photo_format]) + '\n')
+
+    return photo_format

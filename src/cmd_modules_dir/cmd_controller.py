@@ -1,7 +1,6 @@
 import enum
 import json
-import interaction_module
-import response_module
+from src import response_module, interaction_module
 
 
 class Command(enum.Enum):
@@ -10,6 +9,7 @@ class Command(enum.Enum):
     dall_e = 2
     who_dies = 3
     bored = 4
+    cats = 5
 
 
 class CommandController:
@@ -32,6 +32,8 @@ class CommandController:
                     )
                 case Command.bored:
                     self.response = response_module.get_response_if_bored(msg, group_id)
+                case Command.cats:
+                    self.response = response_module.get_response_if_cats(vk, msg, group_id)
             self.state = state
             if self.response is not None:
                 break
@@ -63,4 +65,8 @@ class CommandController:
             case Command.bored:
                 interaction_module.reply_to_msg(
                     vk, address_str, _id, self.response, query_json
+                )
+            case Command.cats:
+                interaction_module.reply_to_msg(
+                    vk, address_str, _id, '', query_json, self.response
                 )
