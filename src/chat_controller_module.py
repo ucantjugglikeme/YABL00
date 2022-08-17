@@ -1,4 +1,4 @@
-import new_msg_controller_module
+import src.new_msg_controller_module as new_msg_controller_module
 
 
 def handle_chat_msg(vk, event, group_id):

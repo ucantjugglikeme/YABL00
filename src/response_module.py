@@ -1,7 +1,7 @@
 import re
 import src.cmd_modules_dir.anecdote_module as a_module
-import interaction_module
-import rand_module
+import src.interaction_module as interaction_module
+import src.rand_module as rand_module
 
 
 def get_response_dict():
