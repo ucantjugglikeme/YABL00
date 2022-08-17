@@ -1,6 +1,7 @@
 import enum
 import json
-from src import response_module, interaction_module
+from src.vk_api_interaction import interaction_module
+from src.response_generation import response_module
 
 
 class Command(enum.Enum):

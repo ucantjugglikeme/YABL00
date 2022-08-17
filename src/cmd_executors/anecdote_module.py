@@ -2,13 +2,12 @@ import json
 import re
 import urllib3
 import nlpcloud
-from vk_api import VkUpload
-from src import delays
+from src.delaying import delays
 from bs4 import BeautifulSoup
 # from lxml import html
 import requests
 
-import src.interaction_module as interact_module
+import src.vk_api_interaction.interaction_module as interact_module
 
 
 def get_anecdote_html_page():

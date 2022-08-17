@@ -1,8 +1,8 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 
 
 # TODO
-# add more delays initialization if needed
+# add more delaying initialization if needed
 def init_delays():
     with open(f'../YABL00_DATABASE/activity_time', 'w') as output_file:
         output_file.write(str(datetime.now()))

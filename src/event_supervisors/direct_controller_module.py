@@ -1,4 +1,4 @@
-import src.new_msg_controller_module as new_msg_controller_module
+import src.event_supervisors.new_msg_controller_module as new_msg_controller_module
 
 
 def handle_direct_msg(vk, event, group_id):

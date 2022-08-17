@@ -1,9 +1,9 @@
 import vk_api
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 
-import src.delays as delays
-import src.direct_controller_module as direct_controller_module
-import src.chat_controller_module as chat_controller_module
+import src.delaying.delays as delays
+import src.event_supervisors.direct_controller_module as direct_controller_module
+import src.event_supervisors.chat_controller_module as chat_controller_module
 
 token_file = open("../YABL00_DATABASE/yabl00_token")
 bot_token = token_file.read()

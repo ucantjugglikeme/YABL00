@@ -1,5 +1,5 @@
-import src.rand_module as rand_module
-import src.data_retrieving_module as data_retrieving_module
+import src.random.rand_module as rand_module
+import src.response_generation.data_retrieving_module as data_retrieving_module
 
 
 def send_msg_to_user(vk, user_id, reply_dict):
